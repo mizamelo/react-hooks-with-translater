@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Spinner from "react-spinner-material";
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Spinner from 'react-spinner-material';
 
-import MainAction from "~/store/ducks/main";
-import Button from "~/styles/components/Button";
-import translate from "~/configs/i18N";
+import MainAction from '~/store/ducks/main';
+import Button from '~/styles/components/Button';
+import translate from '~/configs/i18N';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -17,11 +17,15 @@ export default function Main() {
     fetchData();
   }, [dispatch]);
 
+  const handleClick = useCallback(() => console.log('click'), []);
+
+  const repoSize = useMemo(() => data.length, [data]);
+
   return (
     <div>
       <Spinner
         size={80}
-        spinnerColor={"#FFF"}
+        spinnerColor={'#FFF'}
         spinnerWidth={4}
         visible={loading}
       />
@@ -30,7 +34,11 @@ export default function Main() {
           <li key={elemento.id}>{elemento.archive_url}</li>
         ))}
       </ul>
-      <Button size="small">{translate.BUTTON_SAVE}</Button>
+      <strong>Quantidade total de repositório: {repoSize}</strong>
+      <br />
+      <Button size="small" onClick={handleClick}>
+        {translate.BUTTON_SAVE}
+      </Button>
     </div>
   );
 }
